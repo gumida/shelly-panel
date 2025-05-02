@@ -56,6 +56,13 @@ class ShellyPanelApplet extends Applet.TextIconApplet {
     }
 
     _fetchData() {
+        if (!_httpSession) {
+            global.logError("ShellyPanel: HTTP session is not initialized");
+            this.set_applet_label("Net Err");
+            this.set_applet_tooltip(_("Network connection error"));
+            return;
+        }
+
         if (!this.apiEndpoint) {
             global.log("ShellyPanel: Missing API endpoint configuration");
             this.set_applet_label("Config Err");
@@ -66,7 +73,8 @@ class ShellyPanelApplet extends Applet.TextIconApplet {
         let message = Soup.Message.new('GET', this.apiEndpoint);
         if (!message) {
             global.logError("ShellyPanel: Could not create Soup message");
-            this.set_applet_label("Err");
+            this.set_applet_label("URL Err");
+            this.set_applet_tooltip(_("Invalid URL or network error"));
             return;
         }
 
