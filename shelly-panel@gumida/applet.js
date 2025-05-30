@@ -56,8 +56,21 @@ class ShellyPanelApplet extends Applet.TextIconApplet {
     }
 
     _fetchData() {
+        // Ensure _httpSession is initialized
         if (!_httpSession) {
-            global.logError("ShellyPanel: HTTP session is not initialized");
+            global.logWarning("ShellyPanel: Re-initializing HTTP session.");
+            if (Soup.MAJOR_VERSION >= 3) {
+                _httpSession = new Soup.Session();
+            } else {
+                _httpSession = new Soup.SessionAsync();
+                Soup.Session.prototype.send_and_read_async = function(msg, priority, cancellable, callback) {
+                    this.send_message(msg);
+                }
+            }
+        }
+
+        if (!_httpSession) {
+            global.logError("ShellyPanel: HTTP session could not be initialized");
             this.set_applet_label("Net Err");
             this.set_applet_tooltip(_("Network connection error"));
             return;
