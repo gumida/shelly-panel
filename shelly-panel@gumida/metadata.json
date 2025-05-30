@@ -2,7 +2,7 @@
     "uuid": "shelly-panel@gumida",
     "name": "Shelly Solar Power Monitor",
     "description": "Displays real-time solar power production and consumption from a Shelly device. Uses ☀️ for active production and 🌙 for inactive periods",
-    "version": "1.6",
+    "version": "1.7",
     "max-instances": "-1",
     "multiversion": false,
     "developer": "gumida",
